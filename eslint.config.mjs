@@ -62,7 +62,9 @@ export default tseslint.config(
         }
       ],
 
-      "no-console": ["warn", { "allow": ["warn", "error"] }]
+      "no-console": ["warn", { "allow": ["warn", "error"] }],
+      "eol-last": ["error", "always"],
+      "no-multiple-empty-lines": ["error", { "max": 2 }]
     },
   },
 );

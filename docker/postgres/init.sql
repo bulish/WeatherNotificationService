@@ -1,0 +1,1 @@
+CREATE DATABASE "weather-notification-service-db";
