@@ -1,29 +1,29 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { User } from '../user/user.entity';
+import { User } from '../user/entity/user.entity';
 import { JwtService } from './jwt.service';
 import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcryptjs';
 import { LoginDto } from './dto/login.dto';
-import { UserRepository } from 'src/user/user.repository';
+import { UserRepository } from 'src/user/repository/user.repository';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
 
   constructor(
-    private usersRepository: UserRepository,
+    private userRepository: UserRepository,
     private jwtService: JwtService
   ) {}
 
   async register(registerDto: RegisterDto): Promise<User> {
     const { username, firstName, lastName, email, password } = registerDto;
 
-    const emailExists = await this.usersRepository.findUserByEmail(email);
+    const emailExists = await this.userRepository.findUserByEmail(email);
     if (emailExists) {
       throw new BadRequestException('Email is already taken');
     }
 
-    const usernameExists = await this.usersRepository.findUserByUsername(username);
+    const usernameExists = await this.userRepository.findUserByUsername(username);
     if (usernameExists) {
       throw new BadRequestException('Username is already taken');
     }
@@ -31,7 +31,7 @@ export class AuthService {
     // password hesh
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    return this.usersRepository.createUser(
+    return this.userRepository.createUser(
       username,
       firstName,
       lastName,
@@ -43,7 +43,7 @@ export class AuthService {
   async login(loginDto: LoginDto): Promise<JwtPayload & { token: string, expiredAt: string }> {
     const { email, password } = loginDto;
 
-    const user = await this.usersRepository.findUserByEmail(email)
+    const user = await this.userRepository.findUserByEmail(email)
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     };
