@@ -1,0 +1,64 @@
+### Get all cities
+GET http://localhost:8080/cities
+
+### Get existing city by id
+GET http://localhost:8080/cities/3
+Content-Type: application/json
+
+### Get not-existing city by id
+GET http://localhost:8080/cities/9
+Content-Type: application/json
+
+### Create new city
+POST http://localhost:8080/cities
+Content-Type: application/json
+
+{
+  "name": "Ostrava"
+}
+
+### Create new invalid city
+POST http://localhost:8080/cities
+Content-Type: application/json
+
+{
+  "navvme": "Brno"
+}
+
+### Create new duplicated city
+POST http://localhost:8080/cities
+Content-Type: application/json
+
+{
+  "name": "Brno"
+}
+
+### Update existing city
+PUT http://localhost:8080/cities/3
+Content-Type: application/json
+
+{
+  "name": "Prague"
+}
+
+### Update invalid city
+PUT http://localhost:8080/cities/2
+Content-Type: application/json
+
+{
+  "navvme": "Brno"
+}
+
+### Update non-existing city
+PUT http://localhost:8080/cities/20
+Content-Type: application/json
+
+{
+  "name": "Prague"
+}
+
+### Delete existing city
+DELETE http://localhost:8080/cities/3
+
+### Delete non-existing city
+DELETE http://localhost:8080/cities/29

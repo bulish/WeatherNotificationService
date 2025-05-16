@@ -3,22 +3,24 @@ import { UserService } from './user.service';
 import { plainToInstance } from 'class-transformer';
 import { User } from './entity/user.entity';
 import { UpdateUserDto } from './dto/user.dto';
+import { IController, IControllerError } from 'src/common/interfaces/controller.interface';
+import { RegisterDto } from 'src/auth/dto/register.dto';
 
 @Controller('users')
-export class UserController {
+export class UserController implements Omit<IController<User, RegisterDto>, 'create'> {
 
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async getAllUser() {
-    return await this.userService.getAllUsers();
+  async getAll(): Promise<User[]> {
+    return await this.userService.getAll();
   }
 
   @Get(':id')
-  async getUserById(
+  async getById(
     @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
     id: number,
-  ) {
+  ): Promise<User | IControllerError> {
     const user = await this.userService.getById(id);
 
     if (!user) {
@@ -29,18 +31,18 @@ export class UserController {
   }
 
   @Put(':id')
-  async updateUser(
+  async update(
     @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
     id: number,
     @Body(new ValidationPipe()) updateUserDto: UpdateUserDto
-  ) {
+  ): Promise<User | IControllerError>  {
     const user = await this.userService.getById(id);
 
     if (!user) {
       return { statusCode: 404, message: 'User not found' };
     }
 
-    const updatedUser = await this.userService.updateUser(id, {
+    const updatedUser = await this.userService.update(id, {
       ...user,
       ...updateUserDto
     });
@@ -49,18 +51,18 @@ export class UserController {
   }
 
   @Delete(':id')
-  async deleteUser(
+  async delete(
     @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
     id: number,
-  ) {
+  ): Promise<void | IControllerError>  {
     const user = await this.userService.getById(id);
 
     if (!user) {
       return { statusCode: 404, message: 'User not found' };
     }
 
-    await this.userService.deleteUser(id);
-    return HttpStatus.NO_CONTENT;
+    await this.userService.delete(id);
+    return { statusCode: 204, message: 'User was successfully deleted' };
   }
 
 }

@@ -8,12 +8,7 @@ export class UserRepository {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-  ) {  }
-
-  async createUser(username: string, firstName: string, lastName: string, email: string, password: string,): Promise<User> {
-    const user = this.userRepository.create({ username, password, firstName, lastName, email });
-    return this.userRepository.save(user);
-  }
+  ) {}
 
   async findUserById(id: number): Promise<User | null> {
     return this.userRepository.findOne({ where: { id }  });
@@ -27,23 +22,23 @@ export class UserRepository {
     return this.userRepository.findOne({ where: { email } });
   }
 
+  async getAll(): Promise<User[]> {
+    return await this.userRepository.find({
+      select: ['id', 'username', 'email', 'firstName', 'lastName']
+    });
+  }
+
+  async createUser(username: string, firstName: string, lastName: string, email: string, password: string,): Promise<User> {
+    const user = this.userRepository.create({ username, password, firstName, lastName, email });
+    return this.userRepository.save(user);
+  }
+
   async updateUser(id: number, updates: Partial<User>): Promise<User | null> {
-    console.log('UPDATING USER ID:', id);
-    console.log('UPDATES:', updates);
-
-    const result = await this.userRepository.update(id, updates);
-    console.log('UPDATE RESULT:', result);
-
+    await this.userRepository.update(id, updates);
     return this.userRepository.findOne({ where: { id } });
   }
 
   async removeUser(id: number): Promise<void> {
     await this.userRepository.delete(id);
-  }
-
-  async getAll(): Promise<User[]> {
-    return await this.userRepository.find({
-      select: ['id', 'username', 'email', 'firstName', 'lastName']
-    });
   }
 }

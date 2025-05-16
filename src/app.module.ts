@@ -6,9 +6,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import typeorm from './config/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { CityModule } from './city/city.module';
 
 @Module({
   imports: [
+    CityModule,
     AuthModule,
     UserModule,
     ConfigModule.forRoot({
