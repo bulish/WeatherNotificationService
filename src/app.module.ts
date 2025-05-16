@@ -10,10 +10,12 @@ import { WeatherModule } from './weather/weather.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { GlobalCacheInterceptor } from './common/interceptors/global-cache.interceptor';
 import { CacheModule } from '@nestjs/cache-manager';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     CacheModule.register(),
+    ScheduleModule.forRoot(),
     WeatherModule,
     CityModule,
     AuthModule,
