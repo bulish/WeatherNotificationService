@@ -1,10 +1,12 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Post, Put, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Post, Put, UseGuards, ValidationPipe } from "@nestjs/common";
 import { CityService } from "./city.service";
 import { City } from "./entity/city.entity";
 import { plainToInstance } from "class-transformer";
 import { CityDto } from "./dto/city.dto";
 import { IController, IControllerError } from "src/common/interfaces/controller.interface";
+import { AuthGuard } from "src/auth/auth.guard";
 
+@UseGuards(AuthGuard)
 @Controller('cities')
 export class CityController implements IController<City, CityDto> {
 
