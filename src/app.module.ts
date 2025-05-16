@@ -3,13 +3,14 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import typeorm from './config/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { CityModule } from './city/city.module';
+import { WeatherModule } from './weather/weather.module';
 
 @Module({
   imports: [
+    WeatherModule,
     CityModule,
     AuthModule,
     UserModule,

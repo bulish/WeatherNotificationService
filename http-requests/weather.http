@@ -1,0 +1,3 @@
+### Get weather in current city
+GET http://localhost:8080/weather/current-weather/Brno
+Content-Type: application/json
