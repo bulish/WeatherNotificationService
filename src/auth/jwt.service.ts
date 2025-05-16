@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { JwtService as NestJwtService } from "@nestjs/jwt";
 import { JwtPayload } from "./interfaces/jwt-payload.interface";
+import { INVALID_TOKEN } from "src/common/constants/response.contants";
 
 @Injectable()
 export class JwtService {
@@ -15,7 +16,7 @@ export class JwtService {
     try {
       return this.jwtService.verify(token);
     } catch (error) {
-      throw new Error('Token is invalid');
+      throw new Error(INVALID_TOKEN);
     }
   }
 

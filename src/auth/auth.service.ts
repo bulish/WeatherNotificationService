@@ -6,6 +6,7 @@ import * as bcrypt from 'bcryptjs';
 import { LoginDto } from './dto/login.dto';
 import { UserRepository } from 'src/user/repository/user.repository';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
+import { EMAIL_TAKEN, INVALID_CREDENTIALS, USERNAME_TAKEN } from 'src/common/constants/response.contants';
 
 @Injectable()
 export class AuthService {
@@ -20,15 +21,14 @@ export class AuthService {
 
     const emailExists = await this.userRepository.findUserByEmail(email);
     if (emailExists) {
-      throw new BadRequestException('Email is already taken');
+      throw new BadRequestException(EMAIL_TAKEN);
     }
 
     const usernameExists = await this.userRepository.findUserByUsername(username);
     if (usernameExists) {
-      throw new BadRequestException('Username is already taken');
+      throw new BadRequestException(USERNAME_TAKEN);
     }
     
-    // password hesh
     const hashedPassword = await bcrypt.hash(password, 10);
 
     return this.userRepository.createUser(
@@ -45,12 +45,12 @@ export class AuthService {
 
     const user = await this.userRepository.findUserByEmail(email)
     if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException(INVALID_CREDENTIALS);
     };
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException(INVALID_CREDENTIALS);
     }
 
     const payload = {

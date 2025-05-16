@@ -2,6 +2,8 @@ import { Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { catchError, map, Observable, retry, throwError } from 'rxjs';
 import { IWeatherResponse } from './interfaces/weather-response.interface';
+import { FAILED_TO_FETCH } from 'src/common/constants/response.contants';
+import { API_URL } from 'src/common/constants/routes.constants';
 
 @Injectable()
 export class WeatherService {
@@ -11,7 +13,7 @@ export class WeatherService {
   private readonly logger = new Logger(WeatherService.name);
 
   getWeatherInCity(cityName: string, apiKey: string): Observable<IWeatherResponse> {
-    const url = 'http://api.weatherstack.com/current';
+    const url = API_URL;
 
     const params = {
       access_key: apiKey,
@@ -22,8 +24,8 @@ export class WeatherService {
       retry(3),
       map(response => response.data),
       catchError(err => {
-        this.logger.error('Failed to fetch data ', err.message)
-        return throwError(() => new Error('Failed to fetch weather'))
+        this.logger.error(FAILED_TO_FETCH, err.message)
+        return throwError(() => new Error(FAILED_TO_FETCH))
       })
     )
 

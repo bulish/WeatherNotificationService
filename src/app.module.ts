@@ -7,9 +7,13 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { CityModule } from './city/city.module';
 import { WeatherModule } from './weather/weather.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { GlobalCacheInterceptor } from './common/interceptors/global-cache.interceptor';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
+    CacheModule.register(),
     WeatherModule,
     CityModule,
     AuthModule,
@@ -33,6 +37,12 @@ import { WeatherModule } from './weather/weather.module';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: GlobalCacheInterceptor,
+    },
+  ],
 })
 export class AppModule {  }
