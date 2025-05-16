@@ -7,15 +7,16 @@ GET http://localhost:8080/cities/3
 Content-Type: application/json
 
 ### Get not-existing city by id
-GET http://localhost:8080/cities/9
-Content-Type: application/json
+GET http://localhost:8080/cities/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3R1c2VyQGV4YW1wbGUuY29tIiwiaWQiOjQsInVzZXJuYW1lIjoidGVzdHVzZXIiLCJmaXJzdE5hbWUiOiJUZXN0IiwibGFzdE5hbWUiOiJVc2VyIiwiaWF0IjoxNzQ3NDA3MDk5LCJleHAiOjE3NDc0MTA2OTl9.ZJgfN7QHG4d-1L59LWxwB1b82oQX6CZSTo7ZOZSQChM
 
 ### Create new city
 POST http://localhost:8080/cities
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3R1c2VyQGV4YW1wbGUuY29tIiwiaWQiOjQsInVzZXJuYW1lIjoidGVzdHVzZXIiLCJmaXJzdE5hbWUiOiJUZXN0IiwibGFzdE5hbWUiOiJVc2VyIiwiaWF0IjoxNzQ3NDA3MDk5LCJleHAiOjE3NDc0MTA2OTl9.ZJgfN7QHG4d-1L59LWxwB1b82oQX6CZSTo7ZOZSQChM
 
 {
-  "name": "Ostrava"
+  "name": "Brno"
 }
 
 ### Create new invalid city
